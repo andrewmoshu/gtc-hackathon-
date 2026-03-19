@@ -102,6 +102,7 @@ export default function VideoIntro({ onComplete }) {
   const [phase, setPhase] = useState(0);
   const [taglineIdx, setTaglineIdx] = useState(0);
   const [canEnter, setCanEnter] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
     const t1 = setTimeout(() => setPhase(1), 600);
@@ -195,15 +196,46 @@ export default function VideoIntro({ onComplete }) {
                     lineHeight: 0,
                   }}
                 >
-                  <iframe
-                    width="840"
-                    height="473"
-                    src="https://www.youtube.com/embed/L_jOWiGj1nc?autoplay=1&mute=1&loop=1&playlist=L_jOWiGj1nc&controls=0&modestbranding=1&rel=0"
-                    title="CodeSentinel Commercial"
-                    allow="autoplay; fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    style={{ display: 'block', border: 'none' }}
-                  />
+                  <div style={{ position: 'relative', lineHeight: 0 }}>
+                    <iframe
+                      key={muted ? 'muted' : 'unmuted'}
+                      width="840"
+                      height="473"
+                      src={`https://www.youtube.com/embed/L_jOWiGj1nc?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=L_jOWiGj1nc&controls=0&modestbranding=1&rel=0`}
+                      title="CodeSentinel Commercial"
+                      allow="autoplay; fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      style={{ display: 'block', border: 'none' }}
+                    />
+                    {/* Mute/unmute toggle */}
+                    <motion.button
+                      onClick={(e) => { e.stopPropagation(); setMuted((m) => !m); }}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      style={{
+                        position: 'absolute',
+                        bottom: 12,
+                        right: 12,
+                        zIndex: 20,
+                        background: 'rgba(0,0,0,0.75)',
+                        border: '1px solid rgba(118,185,0,0.4)',
+                        borderRadius: 8,
+                        padding: '6px 12px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: 11,
+                        letterSpacing: '0.15em',
+                        color: '#76B900',
+                        backdropFilter: 'blur(4px)',
+                      }}
+                    >
+                      <span style={{ fontSize: 15 }}>{muted ? '🔇' : '🔊'}</span>
+                      {muted ? 'Unmute' : 'Mute'}
+                    </motion.button>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
