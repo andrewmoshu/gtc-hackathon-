@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&display=swap');
+
+@theme {
+  --color-nvidia: #76B900;
+  --color-nvidia-bright: #93E100;
+  --color-nvidia-dim: #4a7a00;
+  --color-bg: #0a0a0a;
+  --color-surface: #1a1a1a;
+  --color-border: #2a2a2a;
+  --color-critical: #FF0033;
+  --color-high: #FF6600;
+  --color-medium: #FFD600;
+  --color-low: #4a7a00;
+  --color-info: rgba(118,185,0,0.7);
+  --color-dimmed: #666666;
+  --color-cyan: #00D4FF;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-display: 'Barlow Semi Condensed', sans-serif;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a2a #0a0a0a;
+}
+
+body {
+  font-family: var(--font-mono);
+  background-color: #0a0a0a;
+  color: #76B900;
+  margin: 0;
+  overflow: hidden;
+}
+
+.glow {
+  text-shadow: 0 0 4px rgba(118, 185, 0, 0.15);
+}
+
+.glow-strong {
+  text-shadow: 0 0 6px rgba(118, 185, 0, 0.2);
+}
+
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.03) 0px,
+    rgba(0, 0, 0, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 4px rgba(255, 0, 51, 0.4); }
+  50% { box-shadow: 0 0 16px rgba(255, 0, 51, 0.8); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+.animate-pulse-red {
+  animation: pulse-red 2s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+pre code.hljs {
+  background: #0a0a0a !important;
+  padding: 12px !important;
+  border-radius: 4px;
+  font-size: 13px;
+}
