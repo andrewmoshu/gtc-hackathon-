@@ -1,5 +1,5 @@
+import asyncio
 import os
-import subprocess
 import tempfile
 import shutil
 import logging
@@ -56,15 +56,17 @@ CONFIG_BASENAMES = {
 }
 
 
-def clone_repo(url: str, target_dir: str) -> str:
+async def clone_repo(url: str, target_dir: str) -> str:
     repo_name = url.rstrip("/").split("/")[-1].replace(".git", "")
     repo_path = os.path.join(target_dir, repo_name)
-    subprocess.run(
-        ["git", "clone", "--depth", "1", url, repo_path],
-        check=True,
-        capture_output=True,
-        timeout=120,
+    proc = await asyncio.create_subprocess_exec(
+        "git", "clone", "--depth", "1", url, repo_path,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
     )
+    stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=120)
+    if proc.returncode != 0:
+        raise RuntimeError(f"git clone failed: {stderr.decode()}")
     return repo_path
 
 

@@ -14,10 +14,13 @@ function AppRouter() {
     return <ScanProgress />;
   }
 
-  // Stay on progress until deterministic scanners finish (findings appear)
+  // Stay on progress until deterministic scanners finish OR hunter agent starts
   const hasFindings = state.findings.length > 0;
+  const hunterActive =
+    state.toolCalls.length > 0 ||
+    ['hunter_agent', 'verifier_agent', 'patcher_agent'].includes(state.currentLayer);
 
-  if (state.status === 'scanning' && !hasFindings) {
+  if (state.status === 'scanning' && !hasFindings && !hunterActive) {
     return <ScanProgress />;
   }
 

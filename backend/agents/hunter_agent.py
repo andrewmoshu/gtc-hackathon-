@@ -238,7 +238,7 @@ async def run_hunter(
                 parsed = _parse_findings(content)
                 for f in parsed:
                     finding_counter += 1
-                    f["id"] = f.get("id", f"VULN-{finding_counter:03d}")
+                    f["id"] = f.get("id", f"{hunter_id}-{finding_counter:03d}")
                     findings.append(f)
                     await sse.emit_hunter_finding(f)
             break
@@ -270,7 +270,7 @@ async def run_hunter(
             if tool_name == "report_finding":
                 finding_counter += 1
                 finding = {
-                    "id": f"VULN-{finding_counter:03d}",
+                    "id": f"{hunter_id}-{finding_counter:03d}",
                     **args,
                 }
                 findings.append(finding)
@@ -391,7 +391,7 @@ async def run_hunter(
 
                     if tool_name == "report_finding":
                         finding_counter += 1
-                        finding = {"id": f"VULN-{finding_counter:03d}", **args}
+                        finding = {"id": f"{hunter_id}-{finding_counter:03d}", **args}
                         findings.append(finding)
                         logger.info(f"[{hunter_id}] Fallback finding: {finding['title']} [{finding.get('severity', '?')}]")
                         await sse.emit_hunter_finding(finding)
@@ -401,7 +401,7 @@ async def run_hunter(
                 parsed = _parse_findings(content)
                 for f in parsed:
                     finding_counter += 1
-                    f["id"] = f.get("id", f"VULN-{finding_counter:03d}")
+                    f["id"] = f.get("id", f"{hunter_id}-{finding_counter:03d}")
                     findings.append(f)
                     await sse.emit_hunter_finding(f)
 
